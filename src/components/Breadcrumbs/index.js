@@ -8,8 +8,10 @@ import { DESKTOP_MIN_WIDTH, TABLET_MIN_WIDTH } from '../../utils/hooks/useRespon
 const useStyles = createUseStyles(theme => ({
   breadcrumbs: {
     display: "flex",
-    padding: 5,
+    padding: 10,
     width: props => props.isMobile ? "100%" : (props.isTablet ? TABLET_MIN_WIDTH : DESKTOP_MIN_WIDTH),
+    backgroundColor: theme.secondaryColor,
+    opacity: 0.8
   },
 
   breadcrumbItem: {

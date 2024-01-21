@@ -39,7 +39,9 @@ const CardListing = ({ fields, route }) => {
         {articleItems.map((item, index) => (
           <div className={classes.cardItem} key={index}>
             <div className={classes.cardImageContainer}>
-              <OptimizedImage imageField={item?.Image} maxWidth={450} maxHeight={300} />
+              <NavLink to={item?.url} >
+                <OptimizedImage imageField={item?.Image} maxWidth={450} maxHeight={300} />
+              </NavLink>
             </div>
             <strong><Text field={item?.Title}></Text></strong>
             <span><Text field={item?.Description}></Text></span>
