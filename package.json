@@ -6,7 +6,9 @@
   "config": {
     "appName": "contoso-corp-jss",
     "rootPlaceholders": [
-      "jss-main"
+      "corporate-top",
+      "corporate-content",
+      "corporate-bottom"
     ],
     "sitecoreDistPath": "/dist/contoso-corp-jss",
     "sitecoreConfigPath": "/App_Config/Include/zzz",
@@ -53,6 +55,8 @@
     "react-dom": "~16.9.0",
     "react-helmet": "~5.2.1",
     "react-i18next": "~11.3.3",
+    "react-jss": "^10.10.0",
+    "react-responsive": "^9.0.2",
     "react-router-dom": "~5.1.0",
     "react-scripts": "3.4.0",
     "serialize-javascript": "~2.1.0"

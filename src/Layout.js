@@ -1,63 +1,56 @@
 import React from 'react';
 import { Placeholder, VisitorIdentification } from '@sitecore-jss/sitecore-jss-react';
-import { NavLink } from 'react-router-dom';
-import { withTranslation } from 'react-i18next';
 import Helmet from 'react-helmet';
+import {generateGlobalStyles} from "./styles/global";
 
-// Using bootstrap is completely optional. It's used here to provide a clean layout for samples,
-// without needing extra CSS in the sample app. Remove it in package.json as well if it's removed here.
-import 'bootstrap/dist/css/bootstrap.css';
-import './assets/app.css';
-import logo from './assets/sc_logo.svg';
+import {createUseStyles, ThemeProvider} from 'react-jss';
+import GoogleFontLoader from './utils/components/GoogleFontLoader';
 
-/*
-  APP LAYOUT
-  This is where the app's HTML structure and root placeholders should be defined.
+const useStyles = createUseStyles((theme) => ({
+  ...generateGlobalStyles(theme),
 
-  All routes share this root layout by default (this could be customized in RouteHandler),
-  but components added to inner placeholders are route-specific.
-*/
+  header: {
+    display: "flex",
+    flexDirection: "column",
+    margin: '0 auto',
+  },
 
-// This is boilerplate navigation for sample purposes. Most apps should throw this away and use their own navigation implementation.
-// Most apps may also wish to use GraphQL for their navigation construction; this sample does not simply to support disconnected mode.
-let Navigation = ({ t, i18n }) => (
-  <div className="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom">
-    <h5 className="my-0 mr-md-auto font-weight-normal">
-      <NavLink to="/" className="text-dark">
-        <img src={logo} alt="Sitecore" />
-      </NavLink>
-    </h5>
-    <nav className="my-2 my-md-0 mr-md-3">
-      <a
-        className="p-2 text-dark"
-        href="https://jss.sitecore.net"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {t('Documentation')}
-      </a>
-      <NavLink to="/styleguide" className="p-2 text-dark">
-        {t('Styleguide')}
-      </NavLink>
-      <NavLink to="/graphql" className="p-2 text-dark">
-        {t('GraphQL')}
-      </NavLink>
-    </nav>
-  </div>
-);
+  main: {
+    display: "flex",
+    flexDirection: "column",
+    flex: "auto",
+    margin: '0 auto',
+  },
+  
+  footer: {
+    display: "flex",
+    flexDirection: "column",
+    margin: '0 auto',
+  }
+}))  
 
-// inject dictionary props (`t`) into navigation so we can translate it
-// NOTE: using this is needed instead of using i18next directly to keep
-// the component state updated when i18n state (e.g. current language) changes
-Navigation = withTranslation()(Navigation);
+function loadThemeFromPageDesign(route){
+  return {
+    fontFamily: route?.fields?.["Page Design"]?.fields?.["Body Font"]?.value,
+    headingFontFamily: route?.fields?.["Page Design"]?.fields?.["Heading Font"]?.value,
+    primaryColor: route?.fields?.["Page Design"]?.fields?.["Primary Color"]?.value,
+    secondaryColor: route?.fields?.["Page Design"]?.fields?.["Secondary Color"]?.value,
+    backgroundColor: route?.fields?.["Page Design"]?.fields?.["Background Color"]?.value,
+    headingFontColor: route?.fields?.["Page Design"]?.fields?.["Headings Text Color"]?.value,
+    bodyTextColor: route?.fields?.["Page Design"]?.fields?.["Body Text Color"]?.value,
+  }
+}
 
-const Layout = ({ route }) => (
-  <React.Fragment>
+const Layout = ({ route }) => {
+  const theme = loadThemeFromPageDesign(route);
+  const classes = useStyles({theme});
+
+  return (  
+    <React.Fragment>
     {/* react-helmet enables setting <head> contents, like title and OG meta tags */}
     <Helmet>
-      <title>
-        {(route.fields && route.fields.pageTitle && route.fields.pageTitle.value) || 'Page'}
-      </title>
+      <title>{route?.fields?.Title?.value}</title>
+      <meta name="description" content={route?.fields?.Description?.value} />
     </Helmet>
 
     {/*
@@ -69,13 +62,26 @@ const Layout = ({ route }) => (
     */}
     <VisitorIdentification />
 
-    <Navigation />
+    {theme?.fontFamily ? (
+      <GoogleFontLoader fonts={[{ font: theme.fontFamily, weights: [300, 400, 500, 600, 700] }]} />
+    ) : null}    
+    {theme?.headingFontFamily && theme?.fontFamily !== theme?.headingFontFamily ? (
+      <GoogleFontLoader fonts={[{ font: theme.headingFontFamily, weights: [300, 400, 500, 600, 700] }]} />
+    ) : null}
 
-    {/* root placeholder for the app, which we add components to using route data */}
-    <div className="container">
-      <Placeholder name="jss-main" rendering={route} />
-    </div>
+    <ThemeProvider theme={theme}>
+      <header className={classes.header}>
+        <Placeholder name="corporate-top" rendering={route} />
+      </header>
+      <main className={classes.main}>
+        <Placeholder name="corporate-content" rendering={route} />
+      </main>
+      <footer className={classes.footer}>
+        <Placeholder name="corporate-bottom" rendering={route} />
+      </footer>
+    </ThemeProvider>
   </React.Fragment>
-);
+  );
+};
 
 export default Layout;
