@@ -8,6 +8,7 @@ import {
 import {
   Placeholder,
   Text,
+  isExperienceEditorActive,
 } from "@sitecore-jss/sitecore-jss-react";
 
 const useStyles = createUseStyles((theme) => ({
@@ -25,18 +26,18 @@ const useStyles = createUseStyles((theme) => ({
     display: "flex",
     flex: "auto",
     flexDirection: "row",
-    width: (props) =>
-    props.isMobile
-      ? "100%"
-      : props.isTablet
-      ? TABLET_MIN_WIDTH
-      : DESKTOP_MIN_WIDTH,
+    width: (props) => props.isMobile ? "100%" : props.isTablet ? TABLET_MIN_WIDTH : DESKTOP_MIN_WIDTH,
   },
 
   sectionColumn: {
+    display: "flex",
+    flexDirection: "column",
     padding: 5,
     flex: "auto",
-    width: props => props.numberOfColumn === 2 ? "50%" : props.numberOfColumn === 3 ? "33%" : null 
+    width: props => props.numberOfColumn === 2 ? "50%" : props.numberOfColumn === 3 ? "33%" : null,
+    "&> div.scEmptyPlaceholder":{
+      width: "100%"
+    }
   },
 }));
 
@@ -49,9 +50,9 @@ const Section = ({ fields, params, rendering }) => {
   const backgroundColor = params["Background Color"] ?? "default";
   const numberOfColumn = parseInt(params["Number of Columns"] ?? "1");
   const hideTitle = params["Hide Title"] == "1";
-
+  
   const { isMobile, isTablet, isDesktop } = useResponsive();
-  const classes = useStyles({ isDesktop, isTablet, isMobile, backgroundColor, numberOfColumn });
+  const classes = useStyles({ isDesktop, isTablet, isMobile, backgroundColor, numberOfColumn, isExperienceEditorActive: isExperienceEditorActive() });
 
   const columns = [];
   for (let index = 1; index <= numberOfColumn; index++) {

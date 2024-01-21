@@ -1,10 +1,11 @@
 import React from 'react';
-import { Placeholder, VisitorIdentification } from '@sitecore-jss/sitecore-jss-react';
+import { Placeholder, VisitorIdentification, isExperienceEditorActive  } from '@sitecore-jss/sitecore-jss-react';
 import Helmet from 'react-helmet';
 import {generateGlobalStyles} from "./styles/global";
 
 import {createUseStyles, ThemeProvider} from 'react-jss';
 import GoogleFontLoader from './utils/components/GoogleFontLoader';
+import { DESKTOP_MIN_WIDTH, TABLET_MIN_WIDTH, useResponsive } from './utils/hooks/useResponsive';
 
 const useStyles = createUseStyles((theme) => ({
   ...generateGlobalStyles(theme),
@@ -12,21 +13,21 @@ const useStyles = createUseStyles((theme) => ({
   header: {
     display: "flex",
     flexDirection: "column",
-    margin: '0 auto',
+    width: props => props.isMobile ? "100%" : (props.isTablet ? TABLET_MIN_WIDTH : DESKTOP_MIN_WIDTH),
   },
 
   main: {
     display: "flex",
     flexDirection: "column",
     flex: "auto",
-    margin: '0 auto',
+    width: "100%",
   },
   
   footer: {
     display: "flex",
     flexDirection: "column",
-    margin: '0 auto',
-  }
+    width: props => props.isMobile ? "100%" : (props.isTablet ? TABLET_MIN_WIDTH : DESKTOP_MIN_WIDTH),
+  },
 }))  
 
 function loadThemeFromPageDesign(route){
@@ -43,7 +44,8 @@ function loadThemeFromPageDesign(route){
 
 const Layout = ({ route }) => {
   const theme = loadThemeFromPageDesign(route);
-  const classes = useStyles({theme});
+  const {isMobile} = useResponsive();
+  const classes = useStyles({theme, isExperienceEditorActive: isExperienceEditorActive(), isMobile});
 
   return (  
     <React.Fragment>

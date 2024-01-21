@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next';
 const useStyles = createUseStyles((theme) => ({
   footerContainer: {
     display: "flex",
-    width: props => props.isMobile ? "100%" : (props.isTablet ? TABLET_MIN_WIDTH : DESKTOP_MIN_WIDTH),
     height: 70,
     fontWeight: "bold",
     color: theme.primaryColor,

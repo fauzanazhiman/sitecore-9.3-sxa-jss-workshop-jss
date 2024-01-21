@@ -17,6 +17,7 @@ export function generateGlobalStyles(theme){
         display: "flex",
         flexDirection: "column",
         height: "100%",
+        alignItems: "center"
       },
       a: {
         color: theme.bodyFontColor,

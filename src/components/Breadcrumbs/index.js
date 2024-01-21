@@ -3,11 +3,13 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Link } from 'react-router-dom';
+import { DESKTOP_MIN_WIDTH, TABLET_MIN_WIDTH } from '../../utils/hooks/useResponsive';
 
 const useStyles = createUseStyles(theme => ({
   breadcrumbs: {
     display: "flex",
-    padding: 5
+    padding: 5,
+    width: props => props.isMobile ? "100%" : (props.isTablet ? TABLET_MIN_WIDTH : DESKTOP_MIN_WIDTH),
   },
 
   breadcrumbItem: {
