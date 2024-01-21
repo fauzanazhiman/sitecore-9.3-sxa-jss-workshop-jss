@@ -15,7 +15,7 @@ const OptimizedImage = ({ imageField, maxWidth, maxHeight}) => {
 
     imgSrc = imgSrc.slice(0, -1); 
 
-    return <img src={imgSrc} alt={imageField?.value?.alt}></img>
+    return <img src={imgSrc} alt={imageField?.value?.alt} loading="lazy"></img>
 };
 
 OptimizedImage.propTypes = {

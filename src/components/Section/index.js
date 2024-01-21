@@ -19,7 +19,10 @@ const useStyles = createUseStyles((theme) => ({
     flexDirection: "column",
     width: "100vw",
     minHeight: 50,
-    alignItems: "center"
+    alignItems: "center",
+    "&> h1": {
+      color:  props => props.backgroundColor === "primaryColor" ? "white": (props.backgroundColor === "secondaryColor" ? "white" : theme.bodyTextColor),
+    }
   },
 
   columnContainer: {

@@ -54,7 +54,7 @@ const ImageWithCaption = ({ fields }) => {
             {productItems.map((item, index) => (
               <div className={classes.productItem} key={index}>
                 <div className={classes.productImageContainer}>
-                  <img src={item.Image} alt={item.Title} width={150} />
+                  <img src={item.Image} alt={item.Title} width={150} loading="lazy"/>
                 </div>
                 <div className={classes.title}>{item.Title}</div>
                 <div className={classes.description}>{item.Description}</div>
